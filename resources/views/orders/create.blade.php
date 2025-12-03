@@ -112,39 +112,31 @@
                             <h5 class="fw-bold mb-0 text-dark">Pembayaran</h5>
                         </div>
 
-                        <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="card h-100 border p-3 cursor-pointer shadow-sm hover-effect-payment">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" value="QRIS" checked>
-                                        <span class="form-check-label fw-bold">QRIS (OVO/GOPAY/DANA)</span>
-                                    </div>
-                                    <div class="mt-3 text-center bg-light rounded p-2">
-                                        <img src="https://placehold.co/200x200/png?text=QR+CODE+LUMICA" class="img-fluid rounded" alt="QRIS">
-                                        <div class="small text-muted mt-2">Scan kode ini</div>
-                                    </div>
-                                </label>
-                            </div>
+                <div class="d-flex align-items-center mb-3">
+                    
+                    <h5 class="fw-bold mb-0 text-dark">Pilih Metode Pembayaran (Transfer Bank Only)</h5>
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="card h-100 border p-3 cursor-pointer shadow-sm hover-effect-payment">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" value="Transfer Bank" {{ old('payment_method') == 'Transfer Bank' ? 'checked' : '' }}>
-                                        <span class="form-check-label fw-bold">Transfer Bank BCA</span>
-                                    </div>
-                                    <div class="mt-3">
-                                        <img src="https://placehold.co/100x30/005baa/FFF?text=BCA" class="mb-2" alt="BCA">
-                                        <h5 class="fw-bold text-primary mb-0">123-456-7890</h5>
-                                        <small class="text-muted">a.n Lumica Production</small>
-                                        <div class="alert alert-warning py-1 px-2 mt-2 small">
-                                            <i class="bi bi-info-circle"></i> Cek nominal transfer sesuai paket.
-                                        </div>
-                                    </div>
-                                </label>
+                <div class="row g-3 mb-3">
+                    @foreach($banks as $bank)
+                    <div class="col-md-4">
+                        <label class="card h-100 border p-3 cursor-pointer shadow-sm hover-effect-payment">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" 
+                                    value="{{ $bank->bank_name }} ({{ $bank->account_number }})" 
+                                    {{ $loop->first ? 'checked' : '' }}> <span class="form-check-label fw-bold">{{ $bank->bank_name }}</span>
                             </div>
-                        </div>
-
+                            
+                            <div class="mt-3 ps-4">
+                                <h5 class="fw-bold text-primary mb-0 font-monospace">{{ $bank->account_number }}</h5>
+                                <small class="text-muted d-block">a.n {{ $bank->account_holder }}</small>
+                            </div>
+                        </label>
+                    </div>
+                    @endforeach
+                </div>
                         <div class="mb-4">
+                            
                             <label class="form-label fw-bold small text-uppercase">Upload Bukti Transfer</label>
                             <input type="file" name="payment_proof" 
                                    class="form-control @error('payment_proof') is-invalid @enderror" 

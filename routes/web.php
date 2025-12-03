@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController; 
 use App\Models\User;
+use App\Http\Controllers\PaymentMethodController;
 
 // Route untuk membersihkan cache di Vercel
 Route::get('/clear-cache', function() {
@@ -53,7 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/order', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/order', [OrderController::class, 'store'])->name('orders.store');
 
-
+    Route::resource('payments', PaymentMethodController::class);
     // --- AREA ADMIN ---
     
     // Group dengan prefix 'admin'

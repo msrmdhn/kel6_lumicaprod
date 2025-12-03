@@ -4,21 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\PaymentMethod; // <--- WAJIB ADA (Kunci Biar Bank Muncul)
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+    // 1. TAMPILKAN HALAMAN FORMULIR
     public function create()
     {
-        // Ambil data paket. Jika kosong, fungsi compact akan mengirim array kosong.
+        // Ambil semua paket foto
         $products = Product::all();
         
-        // Debugging: Jika produk kosong, kode di view akan error/loop tidak jalan.
-        // Tapi dengan perbaikan seeder di atas, ini aman.
-        return view('orders.create', compact('products'));
+        // Ambil semua data bank yang aktif
+        // INI PENTING: Variabel $banks ini yang dicari oleh View
+        $banks = PaymentMethod::where('is_active', true)->get();
+        
+        // Kirim data ke view
+        return view('orders.create', compact('products', 'banks'));
     }
 
+    // 2. PROSES SIMPAN PESANAN
     public function store(Request $request)
     {
         $request->validate([
@@ -27,7 +33,7 @@ class OrderController extends Controller
             'backup_no_wa' => 'required|numeric',
             'product_id' => 'required|exists:products,id',
             'booking_date' => 'required|date|after:today',
-            'payment_method' => 'required',
+            'payment_method' => 'required', 
             'payment_proof' => 'required|image|max:2048',
         ]);
 

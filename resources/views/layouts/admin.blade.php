@@ -114,6 +114,11 @@
                     <span><i class="bi bi-search"></i> Tracking Order</span>
                 </a>
             </li>
+                        <li>
+                <a href="{{ route('payments.index') }}" class="nav-link {{ request()->routeIs('payments.*') ? 'active' : '' }}">
+                    <span><i class="bi bi-credit-card"></i> Metode Bayar</span>
+                </a>
+            </li>
 
             <li class="px-3 pt-4 pb-2 text-uppercase small text-white-50 fw-bold">Pengguna</li>
 
@@ -122,6 +127,7 @@
                     <span><i class="bi bi-person-lines-fill"></i> Kelola User</span>
                 </a>
             </li>
+
             
             <li class="px-3 pt-4 pb-2 text-uppercase small text-white-50 fw-bold">Halaman Web</li>
             
