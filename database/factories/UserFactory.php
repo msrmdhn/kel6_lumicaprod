@@ -25,7 +25,10 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'username' => fake()->unique()->userName(), // TAMBAHAN: Generate username unik
             'email' => fake()->unique()->safeEmail(),
+            'no_wa' => fake()->phoneNumber(), // TAMBAHAN: Generate no hp
+            'role' => 'user', // TAMBAHAN: Default role
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
