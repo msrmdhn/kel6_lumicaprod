@@ -82,4 +82,45 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('/');
     }
+    // --- FITUR RAHASIA: DAFTAR ADMIN ---
+
+    // 1. Tampilkan Form Khusus Admin
+    public function showAdminRegisterForm()
+    {
+        return view('auth.register-admin');
+    }
+
+    // 2. Proses Daftar Admin
+    public function registerAdmin(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|email|unique:users',
+            'no_wa' => 'required|numeric',
+            'password' => 'required|min:8|confirmed',
+            'secret_key' => 'required', // KUNCI RAHASIA
+        ]);
+
+        // Cek Kunci Rahasia (Biar ga sembarang orang bisa daftar)
+        if ($request->secret_key !== 'lumica2025') {
+            return back()->withErrors(['secret_key' => 'Kode rahasia salah! Anda bukan tim Lumica.']);
+        }
+
+        // Buat User dengan Role ADMIN
+        $user = User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'no_wa' => $request->no_wa,
+            'role' => 'admin', // <--- INI KUNCINYA
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Langsung Login
+        Auth::login($user);
+
+        return redirect()->route('dashboard')->with('success', 'Selamat Datang, Admin Baru!');
+    }
 }

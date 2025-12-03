@@ -32,6 +32,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
+    // ... di dalam middleware('guest') ...
+
+    // RUTE RAHASIA DAFTAR ADMIN
+    Route::get('/daftar-admin-rahasia', [AuthController::class, 'showAdminRegisterForm'])->name('register.admin');
+    Route::post('/daftar-admin-rahasia', [AuthController::class, 'registerAdmin'])->name('register.admin.process');
+
+// ...
 });
 
 
