@@ -58,9 +58,9 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            
-            // TAMBAHKAN BAGIAN OPSI SSL INI:
+            // --- BAGIAN INI KUNCINYA (SSL) ---
             'options' => extension_loaded('pdo_mysql') ? array_filter([
+                // Jika di Vercel (Production), pakai path server. Jika di Local, abaikan.
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
