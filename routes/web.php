@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController; 
+use App\Models\User;
 
 // Route untuk membersihkan cache di Vercel
 Route::get('/clear-cache', function() {
@@ -86,4 +87,16 @@ Route::middleware('auth')->group(function () {
     
     // CRUD PAKET FOTO (PRODUK)
     Route::resource('products', ProductController::class);
+
+    // Route untuk menghapus user yang salah daftar biar bisa daftar ulang
+    Route::get('/hapus-user/{email}', function ($email) {
+        $user = User::where('email', $email)->first();
+        
+        if (!$user) {
+            return "User dengan email $email TIDAK DITEMUKAN.";
+        }
+        
+        $user->delete();
+        return "User $email BERHASIL DIHAPUS. Silakan daftar ulang sekarang.";
+    });
 });

@@ -12,7 +12,8 @@
                 </div>
                 <div class="card-body p-4">
                     <form action="{{ route('login') }}" method="POST">
-                        @csrf <div class="mb-3">
+                        @csrf 
+                        <div class="mb-3">
                             <label class="form-label">Username</label>
                             <input type="text" name="username" class="form-control @error('username') is-invalid @enderror" value="{{ old('username') }}" required autofocus>
                             @error('username')
@@ -29,8 +30,14 @@
                             <button type="submit" class="btn btn-primary">MASUK</button>
                         </div>
                     </form>
+
                     <div class="text-center mt-3">
                         <small>Belum punya akun? <a href="{{ route('register') }}">Daftar disini</a></small>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="{{ route('register.admin') }}" class="small text-muted text-decoration-none">
+                            Daftar Akun Admin
+                        </a>
                     </div>
                 </div>
             </div>
