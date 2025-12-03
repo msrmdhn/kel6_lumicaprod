@@ -86,11 +86,11 @@
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white py-3 border-bottom">
                 <h5 class="fw-bold mb-0 text-warning">
-                    <i class="bi bi-pie-chart-fill me-2"></i>Paket Terlaris
+                    <i class="bi bi-bar-chart-fill me-2"></i>Jumlah Pesanan Per Paket
                 </h5>
             </div>
-            <div class="card-body d-flex flex-column justify-content-center align-items-center position-relative">
-                <div style="height: 250px; width: 100%;">
+            <div class="card-body d-flex flex-column justify-content-center">
+                <div style="height: 300px; width: 100%;">
                     <canvas id="packageChart"></canvas>
                 </div>
                 <div class="mt-3 text-muted small text-center">
@@ -150,15 +150,11 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
 <script>
-    // Register Plugin DataLabels agar bisa dipakai
-    Chart.register(ChartDataLabels);
-
     document.addEventListener("DOMContentLoaded", function() {
         
-        // --- CHART 1: LINE CHART (REVENUE - GARIS LURUS) ---
+        // CHART 1: LINE CHART (PENDAPATAN)
         const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
         new Chart(ctxRevenue, {
             type: 'line',
@@ -167,93 +163,90 @@
                 datasets: [{
                     label: 'Pendapatan (Rp)',
                     data: @json($chartRevenueData),
-                    borderColor: '#0d6efd', // Biru
-                    backgroundColor: 'rgba(13, 110, 253, 0.1)', // Biru Transparan
+                    borderColor: '#0d6efd',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
                     borderWidth: 2,
-                    tension: 0, // <--- INI KUNCINYA: 0 BIAR GARIS LURUS TEGAS
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: '#0d6efd',
-                    pointBorderWidth: 2,
+                    tension: 0, 
                     fill: true
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    datalabels: { display: false }, // Jangan tampilkan label angka di grafik garis biar ga semrawut
-                    tooltip: {
-                        backgroundColor: '#212529',
-                        padding: 10,
-                        callbacks: {
-                            label: function(context) {
-                                return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(context.raw);
-                            }
-                        }
-                    }
-                },
+                plugins: { legend: { display: false } },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: { borderDash: [2, 4], color: '#e9ecef' },
                         ticks: {
-                            font: { size: 11 },
                             callback: function(value) { return 'Rp ' + (value/1000) + 'k'; }
                         }
                     },
-                    x: {
-                        grid: { display: false },
-                        ticks: { font: { size: 11 } }
-                    }
+                    x: { grid: { display: false } }
                 }
             }
         });
 
-        // --- CHART 2: DOUGHNUT CHART (PAKET - DENGAN PERSENTASE) ---
+        // CHART 2: BAR CHART (PAKET TERLARIS - SATUAN)
+        // UBAH DARI DOUGHNUT KE BAR
         const ctxPackage = document.getElementById('packageChart').getContext('2d');
         const packageData = @json($chartPackageData);
         const packageLabels = @json($chartPackageLabels);
         
         // Cek data kosong
         if (packageData.length === 0 || packageData.every(val => val === 0)) {
-            // Tampilkan Placeholder jika kosong
+            // Tampilkan teks jika kosong
             ctxPackage.font = "14px Arial";
             ctxPackage.textAlign = "center";
-            ctxPackage.fillText("Belum ada data penjualan", 150, 75);
+            ctxPackage.fillText("Belum ada data penjualan", 150, 150);
         } else {
             new Chart(ctxPackage, {
-                type: 'doughnut',
+                type: 'bar',
                 data: {
                     labels: packageLabels,
                     datasets: [{
+                        label: 'Jumlah Pesanan', 
                         data: packageData,
-                        backgroundColor: ['#ffc107', '#343a40', '#6c757d', '#0d6efd'], // Warna: Kuning, Hitam, Abu, Biru
-                        borderWidth: 0
+                        backgroundColor: [
+                            'rgba(255, 193, 7, 0.8)', // Kuning
+                            'rgba(33, 37, 41, 0.8)',  // Hitam
+                            'rgba(13, 110, 253, 0.8)' // Biru
+                        ],
+                        borderColor: [
+                            '#ffc107',
+                            '#212529',
+                            '#0d6efd'
+                        ],
+                        borderWidth: 1,
+                        barThickness: 40, 
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    layout: { padding: 20 },
                     plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: { usePointStyle: true, padding: 20, font: { size: 11 } }
-                        },
-                        // KONFIGURASI PERSENTASE
-                        datalabels: {
-                            color: '#fff',
-                            font: { weight: 'bold', size: 12 },
-                            formatter: (value, ctx) => {
-                                let sum = 0;
-                                let dataArr = ctx.chart.data.datasets[0].data;
-                                dataArr.map(data => { sum += data; });
-                                let percentage = (value * 100 / sum).toFixed(0) + "%";
-                                return percentage; // Tampilkan misal "45%"
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.raw + ' Pesanan';
+                                }
                             }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1, 
+                                precision: 0
+                            },
+                            title: {
+                                display: true,
+                                text: 'Jumlah Order'
+                            }
+                        },
+                        x: {
+                            grid: { display: false }
                         }
                     }
                 }

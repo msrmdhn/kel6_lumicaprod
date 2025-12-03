@@ -57,20 +57,21 @@ public function index(Request $request)
         }
         $monthsLabel = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
-        // --- 4. DATA GRAFIK 2: PENJUALAN PER PAKET (DOUGHNUT CHART) ---
+        // --- 4. DATA GRAFIK 2: PENJUALAN PER PAKET (ALL TIME - SEUMUR HIDUP) ---
+        // Kita hapus 'whereYear' agar semua data masuk grafik, tidak peduli tahun berapa
         $packageSales = Order::select(
                             'products.name', 
                             DB::raw('COUNT(orders.id) as total_order')
                         )
                         ->join('products', 'orders.product_id', '=', 'products.id')
                         ->whereIn('status', ['paid', 'completed'])
-                        ->whereYear('booking_date', $selectedYear) // Filter Tahun
+                        // ->whereYear('booking_date', $selectedYear) <--- KITA HAPUS/KOMENTAR BARIS INI
                         ->groupBy('products.name')
                         ->pluck('total_order', 'products.name')
                         ->toArray();
 
-        $chartPackageLabels = array_keys($packageSales); // Nama Paket (Personal, Group, dll)
-        $chartPackageData = array_values($packageSales); // Jumlah Ordernya
+        $chartPackageLabels = array_keys($packageSales);
+        $chartPackageData = array_values($packageSales);
 
         // --- 5. TABEL TERBARU ---
         $recentOrders = Order::with(['product', 'user'])->latest()->take(5)->get();

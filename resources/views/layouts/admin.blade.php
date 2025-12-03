@@ -19,14 +19,14 @@
         #sidebar {
             min-width: 260px;
             max-width: 260px;
-            background: #212529; /* Warna Hitam Elegan */
+            background: #212529; 
             color: #fff;
             transition: all 0.3s;
             display: flex;
-            flex-direction: column; /* Agar bisa pakai mt-auto di bawah */
-            position: fixed; /* Sidebar Tetap */
+            flex-direction: column; 
+            position: fixed; 
             height: 100vh;
-            overflow-y: auto; /* Scroll jika menu panjang */
+            overflow-y: auto;
             z-index: 1000;
         }
         #sidebar .sidebar-header {
@@ -44,7 +44,7 @@
         #sidebar .nav-link:hover, #sidebar .nav-link.active {
             color: #fff;
             background: #343a40;
-            border-left: 4px solid #ffc107; /* Aksen Kuning */
+            border-left: 4px solid #ffc107; 
             text-decoration: none;
         }
         #sidebar .nav-link i {
@@ -55,7 +55,7 @@
         /* Area Konten Utama */
         #content {
             width: 100%;
-            margin-left: 260px; /* Memberi ruang untuk sidebar fixed */
+            margin-left: 260px;
             display: flex;
             flex-direction: column;
             min-height: 100vh;

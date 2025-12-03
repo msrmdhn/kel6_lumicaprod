@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">No. HP</label>
-                    <input type="number" name="phone" class="form-control">
+                    <input type="number" name="phone" class="form-control" placeholder="+628xx">
                 </div>
             </div>
 

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
     <div class="container">
         <a class="navbar-brand fw-bold" href="{{ route('home') }}">
-            <i class="bi bi-camera-fill me-2"></i>LUMICA PRODUCTION
+            <i class="bi bi-camera-fill me-2"></i>LUMICA PROJECT
         </a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -16,9 +16,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('public.portfolio') ? 'active' : '' }}" href="{{ route('public.portfolio') }}">
-                        Portofolio
-                    </a>
+                    <a class="nav-link {{ request()->routeIs('public.portfolio') ? 'active' : '' }}" href="{{ route('public.portfolio') }}">Portofolio</a>
                 </li>
 
                 @if(Route::has('orders.create'))
@@ -30,15 +28,11 @@
                 @endif
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('public.team') ? 'active' : '' }}" href="{{ route('public.team') }}">
-                        About Team
-                    </a>
+                    <a class="nav-link {{ request()->routeIs('public.team') ? 'active' : '' }}" href="{{ route('public.team') }}">About Team</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('public.credit') ? 'active' : '' }}" href="{{ route('public.credit') }}">
-                        Credit
-                    </a>
+                    <a class="nav-link {{ request()->routeIs('public.credit') ? 'active' : '' }}" href="{{ route('public.credit') }}">Credit</a>
                 </li>
 
                 @guest
@@ -61,15 +55,8 @@
                                         <i class="bi bi-speedometer2 me-2"></i> Dashboard Admin
                                     </a>
                                 </li>
-                            @else
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="bi bi-clock-history me-2"></i> Riwayat Pesanan
-                                    </a>
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                             @endif
-                            
-                            <li><hr class="dropdown-divider"></li>
                             
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
