@@ -13,6 +13,12 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController; 
 
+// Route untuk membersihkan cache di Vercel
+Route::get('/clear-cache', function() {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    return "Cache Cleared!";
+});
 // --- 1. HALAMAN DEPAN (PUBLIC) ---
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/portfolios-gallery', [PublicController::class, 'portfolio'])->name('public.portfolio');
