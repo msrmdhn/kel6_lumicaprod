@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage; // <--- INI WAJIB ADA BIAR GA MERAH
+use Illuminate\Support\Facades\Storage; 
 use App\Exports\OrderExport;       
 use Maatwebsite\Excel\Facades\Excel; 
 use Barryvdh\DomPDF\Facade\Pdf;    
@@ -46,7 +46,7 @@ class AdminOrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        // Validasi: Hanya boleh hapus jika status 'cancelled'
+        // Validasi
         if ($order->status !== 'cancelled') {
             return redirect()->back()->with('error', 'Gagal! Hanya pesanan status "Batal" yang boleh dihapus.');
         }
@@ -61,15 +61,18 @@ class AdminOrderController extends Controller
         return redirect()->route('admin.orders.index')->with('success', 'Data pesanan sampah berhasil dibersihkan.');
     }
 
-    // 5. FITUR TRACKING ORDER
+    // 5. FITUR TRACKING ORDER 
     public function tracking(Request $request)
     {
         $search = $request->query('search');
         $order = null;
 
         if ($search) {
-            $cleanId = str_replace('#ORDER-', '', $search);
-            $order = Order::with(['user', 'product'])->find($cleanId);
+            $cleanId = preg_replace('/[^0-9]/', '', $search);
+
+            if (!empty($cleanId)) {
+                $order = Order::with(['user', 'product'])->find($cleanId);
+            }
         }
 
         return view('admin.orders.tracking', compact('order', 'search'));

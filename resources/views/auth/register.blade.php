@@ -18,14 +18,14 @@
                         
                         <div class="mb-3">
                             <label class="form-label fw-bold">Nama Lengkap</label>
-                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Nama sesuai KTP" required>
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Masukkan Nama Lengkap Anda.." required>
                             @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Username</label>
-                                <input type="text" name="username" class="form-control @error('username') is-invalid @enderror" value="{{ old('username') }}" placeholder="Tanpa spasi" required>
+                                <input type="text" name="username" class="form-control @error('username') is-invalid @enderror" value="{{ old('username') }}" placeholder="Masukkan Nama Panggilan Anda.." required>
                                 @error('username') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6 mb-3">

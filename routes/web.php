@@ -21,20 +21,19 @@ Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');
     return "Cache Cleared!";
 });
-// --- 1. HALAMAN DEPAN (PUBLIC) ---
+//  1. HALAMAN DEPAN (PUBLIC) 
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/portfolios-gallery', [PublicController::class, 'portfolio'])->name('public.portfolio');
 Route::get('/about-team', [PublicController::class, 'team'])->name('public.team');
 Route::get('/credits-dev', [PublicController::class, 'credit'])->name('public.credit');
 
 
-// --- 2. TAMU (GUEST) ---
+//  2. TAMU (GUEST) 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
-    // ... di dalam middleware('guest') ...
 
     // RUTE RAHASIA DAFTAR ADMIN
     Route::get('/daftar-admin-rahasia', [AuthController::class, 'showAdminRegisterForm'])->name('register.admin');
@@ -44,20 +43,19 @@ Route::middleware('guest')->group(function () {
 });
 
 
-// --- 3. MEMBER & ADMIN (AUTH) ---
+//  3. MEMBER & ADMIN (AUTH) 
 Route::middleware('auth')->group(function () {
     
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // --- FITUR ORDER USER ---
+    //  FITUR ORDER USER 
     Route::get('/order', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/order', [OrderController::class, 'store'])->name('orders.store');
 
     Route::resource('payments', PaymentMethodController::class);
-    // --- AREA ADMIN ---
-    
-    // Group dengan prefix 'admin'
+   
+    //  AREA ADMIN  
     Route::prefix('admin')->name('admin.')->group(function() {
         // 1. Manajemen Pesanan
         // EXPORT EXCEL & PDF
